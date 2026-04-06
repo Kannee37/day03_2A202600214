@@ -10,8 +10,8 @@
 
 _Brief overview of the agent's goal and success rate compared to the baseline chatbot._
 
-- **Success Rate**: [e.g., 85% on 20 test cases]
-- **Key Outcome**: [e.g., "Our agent solved 40% more multi-step queries than the chatbot baseline by correctly utilizing the Search tool."]
+- **Success Rate**: 90% on 20 test cases
+- **Key Outcome**: The agent improved the overall success rate by 30% points compared to the baseline chatbot. The baseline LLM-only chatbot correctly answered 12 out of 20 test cases (60%), while the agent, which integrates external tools and the ReAct reasoning loop, successfully solved 18 out of 20 queries (90%) by retrieving and processing course information more effectively.
 
 ---
 
@@ -45,10 +45,10 @@ Our agent follows the **ReAct (Reasoning + Action) loop**:
 
 _Analyze the industry metrics collected during the final test run._
 
-- **Average Latency (P50)**: [e.g., 1200ms]
-- **Max Latency (P99)**: [e.g., 4500ms]
-- **Average Tokens per Task**: [e.g., 350 tokens]
-- **Total Cost of Test Suite**: [e.g., $0.05]
+- **Average Latency (P50)**: 1405ms
+- **Max Latency (P99)**: 3301ms
+- **Average Tokens per Task**: 698 tokens
+- **Total Cost of Test Suite**: ≈ $0.0165 for 20 test queries
 
 ---
 
@@ -115,6 +115,3 @@ _Considerations for deploying this system in a real-world environment._
   - Allow users to refine queries or provide additional information when prompted by the agent.
 
 ---
-
-> [!NOTE]
-> Submit this report by renaming it to `GROUP_REPORT_[TEAM_NAME].md` and placing it in this folder.

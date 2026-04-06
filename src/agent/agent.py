@@ -47,7 +47,7 @@ class ReActAgent:
 
         while steps < self.max_steps:
             steps += 1
-            logger.info(f"🔄 [VÒNG LẶP ReAct] Bắt đầu Step {steps}/{self.max_steps}")
+            logger.info(f"[VÒNG LẶP ReAct] Bắt đầu Step {steps}/{self.max_steps}")
             
             # 1. Gọi LLM sinh ra suy nghĩ (Thought) và Hành động (Action)
             result_raw = self.llm.generate(current_prompt, system_prompt=self.get_system_prompt())
@@ -69,7 +69,7 @@ class ReActAgent:
                 final_answer = result_text.split("Final Answer:")[-1].strip()
                 total_time = round(time.time() - start_time, 2)
                 
-                logger.info(f"✅ [AGENT_END] Hoàn thành sau {steps} bước. Tổng thời gian: {total_time}s")
+                logger.info(f"[AGENT_END] Hoàn thành sau {steps} bước. Tổng thời gian: {total_time}s")
                 return final_answer
 
             # 3. Dùng Regex tóm lấy lệnh gọi Tool (Action)
@@ -80,14 +80,14 @@ class ReActAgent:
                 tool_name = action_match.group(1)
                 tool_args = action_match.group(2).strip("\"'") # Xóa dấu ngoặc kép thừa nếu có
                 
-                logger.info(f"⚡ [ACTION_PARSED] Bắt lệnh gọi tool: {tool_name} | Tham số: {tool_args}")
+                logger.info(f"[ACTION_PARSED] Bắt lệnh gọi tool: {tool_name} | Tham số: {tool_args}")
                 
                 # Gọi hàm thực thi vật lý
                 tool_start_time = time.time()
                 observation_result = self._execute_tool(tool_name, tool_args)
                 tool_time = round(time.time() - tool_start_time, 2)
                 
-                logger.info(f"📥 [TOOL_END] Hoàn thành tool {tool_name} trong {tool_time}s")
+                logger.info(f"[TOOL_END] Hoàn thành tool {tool_name} trong {tool_time}s")
                 logger.debug(f"[OBSERVATION_DATA] {observation_result[:200]}... (đã rút gọn)")
                 
                 # Ném kết quả vào giấy nháp để AI đọc ở vòng lặp tiếp theo
@@ -95,12 +95,12 @@ class ReActAgent:
             else:
                 # Nếu AI lảm nhảm sai cú pháp, mắng nó và bắt nó làm lại
                 error_msg = "Lỗi: Không tìm thấy 'Action' hoặc 'Final Answer' đúng định dạng. Hãy suy nghĩ lại."
-                logger.warning(f"⚠️ [PARSE_ERROR] AI trả về sai định dạng. Bắt ép sửa lỗi.")
+                logger.warning(f"[PARSE_ERROR] AI trả về sai định dạng. Bắt ép sửa lỗi.")
                 current_prompt += f"Observation: {error_msg}\n"
                 
         # Nếu chạy hết max_steps (ví dụ 5 lần) mà vẫn không ra đáp án -> Báo lỗi Timeout
         total_time = round(time.time() - start_time, 2)
-        logger.error(f"❌ [AGENT_TIMEOUT] Đạt giới hạn {self.max_steps} bước mà chưa có Final Answer. Thời gian: {total_time}s")
+        logger.error(f"[AGENT_TIMEOUT] Đạt giới hạn {self.max_steps} bước mà chưa có Final Answer. Thời gian: {total_time}s")
         return "Xin lỗi, tôi đã cố gắng tra cứu nhưng hệ thống xử lý quá số bước cho phép. Vui lòng thử lại với câu hỏi đơn giản hơn."
 
     def _execute_tool(self, tool_name: str, args: str) -> str:

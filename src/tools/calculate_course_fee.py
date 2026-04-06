@@ -1,3 +1,5 @@
+from typing import Any
+
 def calculate_course_fee(total_fee: Any, total_hours: Any) -> str:
     """
     Hàm thực thi logic tính toán chi phí.
